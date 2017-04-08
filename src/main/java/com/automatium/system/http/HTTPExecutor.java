@@ -8,6 +8,11 @@ import com.automatium.system.http.listener.HTTPExecutionListener;
 public class HTTPExecutor {
 
     public static void main(String[] args) throws InterruptedException {
+
+        if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
+            printHelpAndExit();
+        }
+
         String portString = System.getProperty("port", "0");
 
         int port = Integer.parseInt(portString);
@@ -18,5 +23,13 @@ public class HTTPExecutor {
         while (listener.isRunning()) {
             Thread.sleep(1000L);
         }
+    }
+
+    private static void printHelpAndExit() {
+        System.out.println("Start HTTP executor server in a random available port:" +
+                "\n\tjava -jar HTTPExecutor.jar");
+        System.out.println("Start HTTP executor server in a given port:" +
+                "\n\tjava -jar -Dport=5555 HTTPExecutor.jar");
+        System.exit(0);
     }
 }
