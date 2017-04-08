@@ -14,6 +14,16 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes ('Main-Class': mainClassName);
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     compile 'com.github.sgurusharan:SystemCommand:1.0-SNAPSHOT'
 
