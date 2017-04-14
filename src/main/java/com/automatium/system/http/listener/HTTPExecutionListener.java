@@ -27,6 +27,13 @@ public class HTTPExecutionListener implements HttpHandler {
     private HttpServer server;
     private boolean running = false;
 
+    /**
+     * Create a new thread that can listen for HTTP requests in the
+     * given port. The listener is not started. Use {@link #start()}
+     * to start the listener.
+     *
+     * @param port - a port to start the listener. 0 to automatically select a port
+     */
     public HTTPExecutionListener(int port) {
         try {
             server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -39,14 +46,36 @@ public class HTTPExecutionListener implements HttpHandler {
         }
     }
 
+    /**
+     * Create a new thread that can listen for HTTP requests in a
+     * random available port. The listener is not started. Use
+     * {@link #start()} to start the listener.
+     *
+     * @see #HTTPExecutionListener(int)
+     */
     public HTTPExecutionListener() {
         this(0);
     }
 
+    /**
+     * Check if the listener is currently running.
+     *
+     * @return true if the listener is running
+     */
     public boolean isRunning() {
         return running;
     }
 
+    /**
+     * Start the listener object on the configured port.
+     * The listener executes in a new Thread. So this method
+     * does not block execution of the calling method. This
+     * also prints information about how to send requests
+     * to this listener and on how to stop the listener
+     * using HTTP requests.
+     *
+     * @see #stop()
+     */
     public void start() {
         server.start();
 
@@ -65,7 +94,15 @@ public class HTTPExecutionListener implements HttpHandler {
         running = true;
     }
 
+    /**
+     * Stop a started listener.
+     *
+     * @see #start()
+     */
     public void stop() {
+        if (!running) {
+            System.err.println("HTTPExecutor: Server has already stopped.");
+        }
         server.stop(0);
         System.out.println("HTTPExecutor: Server has stopped.");
         running = false;

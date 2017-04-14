@@ -16,6 +16,12 @@ import java.io.StringWriter;
 
 /**
  * Created by Gurusharan on 11-12-2016.
+ *
+ * An implementation of {@link OutputResponseFormatter}
+ * for converting a {@link CommandOutput} object into an
+ * XML {@link String} and vice versa.
+ *
+ * @see OutputResponseFormatter
  */
 public class XMLResponseFormatter implements OutputResponseFormatter {
     private static final String ROOTTAG = "commandoutput";
@@ -23,6 +29,24 @@ public class XMLResponseFormatter implements OutputResponseFormatter {
     private static final String ERROR = "error";
     private static final String EXITCODE = "exitcode";
 
+    /**
+     * Convert a {@link CommandOutput} object into an XML
+     * {@link String}. The XML root is 'commandoutput' and
+     * it contains the tags: 'output', containing the
+     * output stream of the command, 'error', containing
+     * the error stream of the command, and 'exitcode',
+     * containing the exit code of the command.
+     *
+     * Thus the returned format is:
+     * <commandoutput>
+     *     <output>Output stream in the CommandOutput</output>
+     *     <error>Error stream in the CommandOutput</error>
+     *     <exitcode>Exit code in the CommandOutput</exitcode>
+     * </commandoutput>
+     *
+     * @param output - a {@link CommandOutput} object
+     * @return an XML {@link String}
+     */
     @Override
     public String getResponseFromOutput(CommandOutput output) {
         try {
@@ -61,6 +85,17 @@ public class XMLResponseFormatter implements OutputResponseFormatter {
         return null;
     }
 
+    /**
+     * Convert an XML {@link String} into a {@link CommandOutput}
+     * object. The XML string must contain the root element
+     * 'commandoutput' with the attributes: 'output', 'error'
+     * and 'exitcode' (which should be an integer). These
+     * correspond to the output stream, error stream and the
+     * exit code of the {@link CommandOutput} object respectively.
+     *
+     * @param response an XML {@link String}
+     * @return a {@link CommandOutput} object or null if XML string is not valid
+     */
     @Override
     public CommandOutput getOutputFromResponse(String response) {
         try {
